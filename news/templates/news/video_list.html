@@ -1,0 +1,49 @@
+{% extends 'news/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="reels-container">
+    
+    <div class="reels-nav" style="display: flex; justify-content: space-between; align-items: center; width: 100%; max-width: 400px; margin: 0 auto 20px;">
+        <a href="{% url 'news_list' %}" class="btn-back-oval" style="margin-bottom: 0;">← На главную</a>
+        
+        {% if user.is_authenticated %}
+            <a href="{% url 'add_video' %}" class="nav-btn" style="background: #ff6ec7; color: white; border-radius: 50px; padding: 10px 20px; text-decoration: none; font-weight: 600; transition: 0.3s;">+ Добавить видео</a>
+        {% endif %}
+    </div>
+
+    <div class="reels-feed">
+        {% for video in videos %}
+        <div class="reel">
+            {% if video.video_file %}
+                <video class="reel-video" loop muted autoplay playsinline controlslist="nodownload">
+                    <source src="{{ video.video_file.url }}" type="video/mp4">
+                    Ваш браузер не поддерживает видео.
+                </video>
+            {% elif video.video_url %}
+                <iframe 
+                    class="reel-video" 
+                    src="{{ video.video_url }}?autoplay=1&mute=1&loop=1&controls=0" 
+                    frameborder="0" 
+                    allow="autoplay; encrypted-media" 
+                    allowfullscreen>
+                </iframe>
+            {% endif %}
+            
+            <div class="reel-overlay">
+                <div class="reel-info">
+                    <h3>{{ video.title }}</h3>
+                    <p>#dorama #trending</p>
+                </div>
+                <div class="reel-actions">
+                    <button class="action-btn">❤️</button>
+                    <button class="action-btn">💬</button>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+            <p style="text-align: center; color: #666; margin-top: 50px;">Видео пока нет. Станьте первым!</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends 'news/base.html' %}
+
+{% block content %}
+<div class="container py-4">
+    <a href="{% url 'reelse' %}" class="btn-back-oval">← Назад к Reels</a>
+
+    <div class="detail-card" style="max-width: 500px; margin: 40px auto; background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+        <h2 style="color: #6c63ff; text-align: center; margin-bottom: 25px;">🎬 Добавить новый Reels</h2>
+        
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            {% for field in form %}
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #444;">{{ field.label }}</label>
+                    <div class="custom-form-input">
+                        {{ field }}
+                    </div>
+                    {% if field.errors %}
+                        <p style="color: #ff4d4d; font-size: 0.85em; margin-top: 5px;">{{ field.errors.0 }}</p>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            
+            <button type="submit" class="btn-read-more" style="width: 100%; border: none; cursor: pointer; padding: 15px; font-size: 16px; margin-top: 10px;">
+                Опубликовать ✨
+            </button>
+        </form>
+    </div>
+</div>
+
+<style>
+    /* Улучшаем внешний вид полей */
+    input[type="text"], 
+    input[type="url"], 
+    input[type="file"],
+    select,
+    textarea {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid #f0f0f0;
+        border-radius: 12px;
+        box-sizing: border-box;
+        transition: all 0.3s ease;
+        font-family: 'Poppins', sans-serif;
+    }
+    
+    input:focus {
+        border-color: #ff6ec7;
+        outline: none;
+        box-shadow: 0 0 10px rgba(255, 110, 199, 0.1);
+    }
+
+    .btn-read-more:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(108, 99, 255, 0.3);
+    }
+</style>
+{% endblock %}

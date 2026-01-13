@@ -1,0 +1,48 @@
+{% extends 'news/base.html' %}
+
+{% block content %}
+<style>
+    .btn-back-oval { display: none !important; }
+</style>
+
+<div class="search-container">
+    <form method="get" action="{% url 'news_list' %}" class="search-box">
+        <input type="text" name="q" placeholder="Поиск дорамы..." value="{{ query|default:'' }}">
+        <button type="submit">Найти ✨</button>
+    </form>
+</div>
+
+<div class="news-feed">
+    {% for item in news %}
+    <div class="news-card">
+        {% if item.image %}
+            <a href="{% url 'news_detail' item.id %}">
+                <img src="{{ item.image.url }}" alt="{{ item.title }}" style="width: 100%; border-radius: 15px; margin-bottom: 15px;">
+            </a>
+        {% endif %}
+        
+        <h2>{{ item.title }}</h2>
+        <p style="color: #ff6ec7; font-weight: bold; margin-bottom: 10px;">#{{ item.dorama_name }}</p>
+        
+        <p>
+            {{ item.description|truncatewords:20 }}
+            <a href="{% url 'news_detail' item.id %}" style="color: #6c63ff; text-decoration: none; font-size: 0.9em; font-weight: bold;">Читать далее...</a>
+        </p>
+        
+        <div style="margin-top: 20px; display: flex; justify-content: space-between; align-items: center;">
+            <a href="{% url 'news_detail' item.id %}" class="btn-read-more">Читать полностью →</a>
+            <span style="font-size: 0.8em; color: #999;">❤️ {{ item.total_likes }}</span>
+        </div>
+        
+        <div style="margin-top: 15px; font-size: 0.75em; color: #bbb; border-top: 1px solid #f0f0f0; padding-top: 10px;">
+            Автор: <strong>{{ item.author.username|default:"Аноним" }}</strong> | {{ item.created_at|date:"d M Y" }}
+        </div>
+    </div>
+    {% empty %}
+        <div style="text-align: center; width: 100%; padding: 40px; color: #666;">
+            <p>🤔 Ничего не нашли по запросу "{{ query }}".</p>
+            <a href="{% url 'news_list' %}" style="color: #6c63ff;">Показать все новости</a>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

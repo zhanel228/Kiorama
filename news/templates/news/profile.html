@@ -1,0 +1,30 @@
+{% extends 'news/base.html' %}
+
+{% block content %}
+<div class="news-feed">
+    <div class="auth-form-container" style="max-width: 600px; margin-bottom: 30px;">
+        <h2>👤 Личный кабинет</h2>
+        <p><strong>Логин:</strong> {{ user.username }}</p>
+        <p><strong>Почта:</strong> {{ user.email }}</p>
+        <p><strong>Дата регистрации:</strong> {{ user.date_joined|date:"d.m.Y" }}</p>
+    </div>
+
+    <h3 style="text-align: center; color: #6c63ff;">📝 Мои публикации ({{ my_news.count }}):</h3>
+
+    {% for item in my_news %}
+        <div class="news-card">
+            <h3>{{ item.dorama_name }}</h3>
+            {% if item.image %}
+                <img src="{{ item.image.url }}" alt="{{ item.dorama_name }}">
+            {% endif %}
+            <p>{{ item.content|truncatewords:25 }}</p>
+            <a href="{% url 'news_detail' item.id %}" class="btn-read-more">Редактировать / Просмотр</a>
+        </div>
+    {% empty %}
+        <div class="news-card">
+            <p>Вы еще не опубликовали ни одной новости. Пора это исправить! 🌸</p>
+            <a href="{% url 'add_news' %}" class="btn-read-more">Создать первую новость</a>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

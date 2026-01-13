@@ -1,0 +1,81 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Мир Дорам{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'news/style.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<header>
+    <div class="header-container">
+        <div class="logo">
+            <h1 style="margin:0; font-size: 22px; color: white;">🌸 Мир Дорам</h1>
+        </div>
+        
+        <nav class="nav-menu">
+            <a href="{% url 'news_list' %}" class="nav-btn">Главная</a>
+            <a href="{% url 'reelse' %}" class="nav-btn">Reels</a>
+
+            {% if user.is_authenticated %}
+                <a href="{% url 'add_news' %}" class="nav-btn">Добавить новости</a>
+            {% else %}
+                <div class="dropdown">
+                    <button class="nav-btn">Добавить новости</button>
+                    <div class="dropdown-content">
+                        <p class="dropdown-hint" style="padding: 10px 15px; margin: 0; font-size: 12px; color: #888;">Нужна регистрация</p>
+                        <a href="{% url 'login' %}">🔐 Войти</a>
+                        <a href="{% url 'register' %}">📝 Регистрация</a>
+                    </div>
+                </div>
+            {% endif %}
+
+            <div class="dropdown">
+                <button class="nav-btn">Ваш аккаунт</button>
+                <div class="dropdown-content">
+                    {% if user.is_authenticated %}
+                        <span class="user-name" style="display: block; padding: 10px 15px; font-size: 14px; color: #333;">
+                            Привет, <strong>{{ user.username }}</strong>!
+                        </span>
+                        <hr style="border: 0; border-top: 1px solid #eee; margin: 5px 0;">
+                        
+                        <a href="{% url 'profile' %}">👤 Мой профиль</a> 
+                        
+                        <form action="{% url 'logout' %}" method="post" style="width: 100%; margin: 0;">
+                            {% csrf_token %}
+                            <button type="submit" class="logout-link" style="width: 100%; text-align: left; background: none; border: none; padding: 10px 15px; font-family: inherit; font-size: 14px; cursor: pointer; color: #ff6ec7;">
+                                🚪 Выйти
+                            </button>
+                        </form>
+                    {% else %}
+                        <a href="{% url 'login' %}">🔑 Войти</a>
+                        <a href="{% url 'register' %}">✨ Регистрация</a>
+                    {% endif %}
+                </div>
+            </div>
+        </nav>
+    </div>
+</header>
+
+<main class="container" style="position: relative; z-index: 1; padding-top: 20px;">
+    {% block content %}{% endblock %}
+</main>
+
+<footer style="margin-top: 50px; text-align: center; padding: 20px; color: #666;">
+    <p>&copy; 2026 Мир Дорам. Все права защищены. 🌸</p>
+</footer>
+
+<script>
+    document.addEventListener('mousemove', (e) => {
+        const x = (window.innerWidth / 2 - e.clientX) / 50;
+        const y = (window.innerHeight / 2 - e.clientY) / 50;
+        document.body.style.setProperty('--m-x', x + 'px');
+        document.body.style.setProperty('--m-y', y + 'px');
+    });
+</script>
+
+</body>
+</html>

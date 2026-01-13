@@ -1,0 +1,13 @@
+{% extends 'news/base.html' %}
+
+{% block title %}Добавить новость{% endblock %}
+
+{% block content %}
+    <div class="news-card">
+        <h2>Добавить новую дораму</h2>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }} <button type="submit">Опубликовать</button>
+        </form>
+    </div>
+{% endblock %}

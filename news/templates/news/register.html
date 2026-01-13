@@ -1,0 +1,17 @@
+{% extends 'news/base.html' %}
+
+{% block title %}Регистрация{% endblock %}
+
+{% block content %}
+<div class="auth-card">
+    <div class="auth-form-container">
+        <h2>🌸 Регистрация</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Создать аккаунт</button>
+        </form>
+        <p>Уже есть аккаунт? <a href="{% url 'login' %}">Войти здесь</a></p>
+    </div>
+</div>
+{% endblock %}
